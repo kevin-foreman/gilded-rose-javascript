@@ -38,7 +38,7 @@ to our system:
 
 - "Conjured" items degrade in `quality` twice as fast as normal items.
 
-Feel free to make any changes to the `updateQuality` method and add any new code as long as everything still works correctly. However, do not alter the `Item` class as it belong to the goblin in the corner who will insta-rage and one-shot you as he doesn't believe in shared code ownership.
+Feel free to make any changes to the `updateQuality` method and add any new code as long as everything still works correctly. However, do not alter the `Item` class as it belongs to the goblin in the corner who will insta-rage and one-shot you as he doesn't believe in shared code ownership.
 
 Just for clarification, an item can never have its `quality` increase above 50, however "Sulfuras, Hand of Ragnaros" is a legendary item and as such its `quality` is 80 and it
 never alters.
