@@ -33,6 +33,7 @@ items.push(new Item("Conjured Mana Cake", 3, 6));
 export const updateQuality = () => {
 
   for (let item of items) {
+    // item.updateQuality(); // when this gets wrecked
     if (
       item.name != "Aged Brie" &&
       item.name != "Backstage passes to a TAFKAL80ETC concert" &&
