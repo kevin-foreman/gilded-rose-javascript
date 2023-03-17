@@ -4,91 +4,96 @@ export class Item {
     this.sellIn = sellIn;
     this.quality = quality;
   }
-  updateQuality(){
-    // important stuff
-  };
-}
-
-export let items = [];
-
-/* export class YourItem extends Item {
   updateQuality() {
-    if (condition) {
-      do a thing like this.quality++;
-    }
-    this.sellIn--;
+    // important stuff
   }
 }
-*/
 
-items.push(new Item("+5 Dexterity Vest", 10, 20));
-items.push(new Item("Aged Brie", 2, 0));
-items.push(new Item("Elixir of the Mongoose", 5, 7));
-items.push(new Item("Sulfuras, Hand of Ragnaros", 0, 80));
-items.push(new Item("Backstage passes to a TAFKAL80ETC concert", 15, 20));
-items.push(new Item("Conjured Mana Cake", 3, 6));
-// basic item, elixir item, band item, cheese item, etc...
-
-
-export const updateQuality = () => {
-
-  for (let item of items) {
-    // item.updateQuality(); // when this gets wrecked
-    if (
-      item.name != "Aged Brie" &&
-      item.name != "Backstage passes to a TAFKAL80ETC concert" &&
-      item.name != "Sulfuras, Hand of Ragnaros"
-    ) {
-      if (item.quality > 0) {
-          item.quality = item.quality - 1;
-      }
-
-    } else {
-      if (item.quality < 50) {
-        item.quality = item.quality + 1;
-        if (item.name == "Backstage passes to a TAFKAL80ETC concert") {
-          if (item.sellIn < 11) {
-            if (item.quality < 50) {
-              item.quality = item.quality + 1;
-            }
-          }
-          if (item.sellIn < 6) {
-            if (item.quality < 50) {
-              item.quality = item.quality + 1;
-            }
-          }
-        }
-      }
+class BasicItem extends Item {
+  constructor(name, sellIn, quality) {
+    super(name, sellIn, quality);
+  };
+  updateQuality() {
+    if (this.sellIn >= 0 && this.quality > 1) {
+      this.sellIn--;
+      this.quality--;
+    } else if (this.sellIn < 0) {
+      this.quality = this.quality - 2;
     }
-    if (item.name != "Sulfuras, Hand of Ragnaros") {
-      item.sellIn = item.sellIn - 1;
+  }
+};
+
+class CheeseItem extends Item {
+  constructor(name, sellIn, qualtity) {
+    super(name, sellIn, qualtity);
+  };
+  updateQuality() {
+    if (this.quality < 50) {
+      this.quality++;
+      this.sellIn--;
     }
-    if (item.sellIn < 0) {
-      if (item.name != "Aged Brie") {
-        if (item.name != "Backstage passes to a TAFKAL80ETC concert") {
-          if (item.quality > 0) {
-            if (item.name != "Sulfuras, Hand of Ragnaros") {
-              item.quality = item.quality - 1;
-            }
-          }
-        } else {
-          item.quality = item.quality - item.quality;
-        }
-      } else {
-        if (item.quality < 50) {
-          item.quality = item.quality + 1;
-        }
-      }
+  }
+};
+
+class LegendaryItem extends Item {
+  constructor(name, sellIn, quality) {
+    super(name, sellIn, quality);
+  };
+  updateQuality() {
+    // Do nothing???
+  }
+};
+
+class PassItem extends Item {
+  constructor(name, sellIn, quality) {
+    super(name, sellIn, quality);
+  };
+  updateQuality() {
+    this.sellIn--;
+    if (this.sellIn < 0) {
+      this.quality = 0;
+    } else if (this.sellIn < 6) {
+      this.quality = this.quality + 3;
+    } else if (this.sellIn < 11) {
+      this.quality = this.quality + 2;
     }
+  }
+};
+
+class ConjuredItem extends Item {
+  constructor(name, sellIn, quality) {
+    super(name, sellIn, quality);
+  };
+  updateQuality() {
+    this.sellIn--;
+    this.quality = this.quality - 2;
   }
 };
 
 // Factory pattern
 export function ItemFactory(name, sellIn, quality) {
-  switch(name) {
+  switch (name) {
     case "Aged Brie":
-    case "Aged Gouda":
-    return new CheeseItem(name, sellIn, quality);
-  }
-}
+      return new CheeseItem(name, sellIn, quality);
+    case "+5 Dexterity Vest":
+    case "Elixir of the Mongoose":
+      return new BasicItem(name, sellIn, quality);
+    case "Sulfuras, Hand of Ragnaros":
+      return new LegendaryItem(name, sellIn, quality);
+    case "Backstage passes to a TAFKAL80ETC concert":
+      return new PassItem(name, sellIn, quality);
+    case "Conjured Mana Cake":
+      return new ConjuredItem(name, sellIn, quality);
+  };
+};
+
 // This works by implementing classes behind the scenes
+
+export let items = [
+  ItemFactory("Aged Brie", 2, 0),
+  ItemFactory("+5 Dexterity Vest", 10, 20),
+  ItemFactory("Elixir of the Mongoose", 5, 7),
+  ItemFactory("Sulfuras, Hand of Ragnaros", 0, 80),
+  ItemFactory("Backstage passes to a TAFKAL80ETC concert", 15, 20),
+  ItemFactory("Conjured Mana Cake", 3, 6)
+];
